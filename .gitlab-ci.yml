@@ -1,0 +1,59 @@
+# Node Image for docker on which code will execute
+image: node:latest
+
+# This is the stages / task to perfom in jobs
+stages:
+  - build-preprod
+  - deploy-preprod
+  - build-prod
+  - deploy-prod
+
+build-preprod:
+  except:
+    - master
+  except:
+    - master
+  stage: build-preprod
+  script:
+    - npm cache clean --force
+    - npm install
+    - npm run build -- --c preprod
+  artifacts:
+    paths:
+      - dist/
+
+build-prod:
+  only:
+    - tags
+  stage: build-prod
+  script:
+    - npm cache clean --force
+    - npm install
+    - npm run build -- --c production
+  artifacts:
+    paths:
+      - dist/
+
+deploy-pre-prod:
+  only:
+    - develop
+    - tags
+  image: python:latest  
+  stage: deploy-preprod
+  script:
+    - pip install awscli
+    - aws configure set region ap-south-1
+    - aws s3 rm s3://letstalk-cefr-test-ui-pre-prod --recursive
+    - aws s3 cp dist/letstalk/ s3://letstalk-cefr-test-ui-pre-prod --recursive --acl public-read
+
+deploy-prod:
+  when: manual
+  only:
+    - tags
+  image: python:latest  
+  stage: deploy-prod
+  script:
+    - pip install awscli
+    - aws configure set region ap-south-1
+    - aws s3 rm s3://letstalk-cefr-test-ui-prod --recursive
+    - aws s3 cp dist/letstalk/ s3://letstalk-cefr-test-ui-prod --recursive --acl public-read

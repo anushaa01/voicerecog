@@ -1,0 +1,51 @@
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo mr-auto" style="font-family: comic sans MS;"><a href="#">Talkingtown</a></h1>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Home Section-->
+    <section id="hero" class="d-flex align-items-center">
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="500">
+            <div>
+                <h1>Thank you!</h1>
+            </div>
+            <br>
+            <div>
+                <!-- <h2>Your current Level is: {{level}}</h2> -->
+
+                <h2>Your Statistics:</h2>
+                {{history}}
+                <div class="row">
+                    <div class="col">
+                        <h2>Level:</h2>
+                        <h3>A1: {{ this.stats.levelStats.A1 }}%</h3>
+                        <h3>A2: {{ this.stats.levelStats.A1 }}%</h3>
+                        <h3>B1: {{ this.stats.levelStats.B1 }}%</h3>
+                        <h3>B2: {{ this.stats.levelStats.B2 }}%</h3>
+                        <h3>C1: {{ this.stats.levelStats.C1 }}%</h3>
+                        <h3>C2: {{ this.stats.levelStats.C2 }}%</h3>
+                    </div>
+                    <div class="col">
+                        <h2>Skills:</h2>
+                        <h3>L: {{ this.stats.skillStats.L }}</h3>
+                        <h3>S: {{ this.stats.skillStats.S }}</h3>
+                        <h3>R: {{ this.stats.skillStats.R }}</h3>
+                        <h3>W: {{ this.stats.skillStats.W }}</h3>
+                    </div>
+                </div>
+            <div>
+                <button class="btn-get-started scrollto" style="background: transparent;" (click) ="replay()" >REPLAY</button>
+
+            </div>
+
+            
+
+            </div>
+
+        </div>
+    </section>
+</body>

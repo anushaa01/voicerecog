@@ -1,0 +1,72 @@
+<body>
+  <header id="header" class="fixed-top">
+      <div class="container d-flex align-items-center">
+        <h1 class="logo mr-auto" style="font-family: comic sans MS;"><a href="#">Talkingtown</a></h1>
+      </div>
+</header>
+  <section id="question">
+      <div class="question-top">
+        <div class="container">
+          <div class="row">
+              <!-- start speech to text -->
+              <div class="col-lg-12 col-md-12">
+                <div class="question-info" *ngFor="let item of questionsList">
+                    <h4><i>Instruction: {{item.instructions}}</i></h4><br>
+                    <div *ngFor="let sentence of item.answer; let i = index;" [ngClass]="{'left-statement': sentence.align != 'right', 'right-statement': sentence.align == 'right'}">
+
+                        <span (click)="playAudio(i)" style="margin-top: 20px;">
+                          <span class="listen_and_type_icon">
+                            <img id="stopplaybtn" src="assets/images/pause.svg" (click)="playRecord=0" *ngIf = "playIcon == 1 && audInd == i" class="volume">
+                            <img src="assets/images/play-without-border.png" (click)="playRecord=1" *ngIf = "playIcon == 0 || audInd != i" class="volume">
+                          </span>
+                        </span>
+                      
+                      <span *ngFor="let wordHighlight of sentence.statement.split(' ')">
+                        <span *ngIf="recognizedWordWrong.indexOf(wordHighlight.trim().toLowerCase()) > -1; else other" style="color: red">
+                        <span style="text-align: center;">{{wordHighlight}}&nbsp;</span>
+                        </span>
+
+                    <ng-template #other>
+                      {{wordHighlight}}
+                    </ng-template>
+
+                    </span>
+                    </div>
+                    <div >
+                      <div style="text-align: center; margin-bottom: 16px; margin-top: 16px;">
+                        <button class="btn btn-outline-warning" style="margin-right: 16px" (click) = "sdkStartContinousRecognitionBtn()">START</button>
+                        <button class="btn btn-outline-warning" style="margin-right: 16px" (click) = "sdkStopContinousRecognitionBtn()">STOP</button>
+                      </div>
+                      <div >
+                            <textarea id="phraseDiv" placeholder="your voice will be converted to text" style="width: 100%; height: 100%;">{{phraseDiv}}</textarea>
+                      </div>
+                    </div>
+                    <br>
+                    <div *ngIf="isShown" class="text-center">
+                      <h4>Result:</h4>
+                      <h5>Pronunciation Score: {{pronunciationScore}}%</h5>
+                      <h5>Accuracy: {{accuracy}}%</h5>
+                      <h5>Fluency: {{fluency}}%</h5>
+                      <h5>Competeness: {{completeness}}%</h5>
+                      <h5>Word Level Pronunciation Score:</h5>
+                      <table style="margin-left:auto; margin-right:auto" >
+                        <tr>
+                          <th style="border: 1px solid #dddddd;">Word</th>
+                          <th style="border: 1px solid #dddddd;">Pronunciation Score</th>
+                        </tr>
+                        <tr *ngFor="let word of wordLevelResult">
+                            <td *ngIf="word.PronunciationAssessment.AccuracyScore < 80" style="border: 1px solid #dddddd;">{{word.Word}}</td>
+                            <td *ngIf="word.PronunciationAssessment.AccuracyScore < 80" style="border: 1px solid #dddddd;">{{word.PronunciationAssessment.AccuracyScore}}</td>
+                        </tr>
+                      </table>
+                      <p style="color: red; font-size: 12px;">Note: The Words highlighted in red represents the pronunciation Score is less then 80</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Speech to text -->
+
+            </div>
+        </div>
+      </div>
+  </section>
+</body>
